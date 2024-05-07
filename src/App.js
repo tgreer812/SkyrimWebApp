@@ -1,11 +1,15 @@
 import React, { useState } from "react";
 import recipes from "./recipes.json";
-import initialIngredients from "./ingredients.json";
 import "./App.css";
 
 const App = () => {
-  const [ingredients, setIngredients] = useState(initialIngredients);
+  const [ingredients, setIngredients] = useState({});
   const [canMake, setCanMake] = useState([]);
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setIngredients({ ...ingredients, [name]: Number(value) });
+  };
 
   const getAllIngredients = (supply) => {
     return Object.keys(supply).filter((ingredient) => supply[ingredient] > 0);
@@ -42,25 +46,29 @@ const App = () => {
     setCanMake(canMakePotions);
   };
 
-  const resetIngredients = () => {
-    const reset = window.confirm(
-      "Are you sure you want to clear your ingredients?"
-    );
-    if (reset) {
-      const clearedIngredients = {};
-      Object.keys(ingredients).forEach((key) => {
-        clearedIngredients[key] = 0;
-      });
-      setIngredients(clearedIngredients);
-      setCanMake([]);
-    }
-  };
+  const ingredientList = Array.from(
+    new Set(Object.values(recipes).flat())
+  ).sort();
 
   return (
     <div className="App">
       <h1>Potion Maker</h1>
+      <h2>Enter your ingredient quantities:</h2>
+      <div className="ingredient-inputs">
+        {ingredientList.map((ingredient) => (
+          <div key={ingredient}>
+            <label>{ingredient}:</label>
+            <input
+              type="number"
+              name={ingredient}
+              min="0"
+              value={ingredients[ingredient] || ""}
+              onChange={handleInputChange}
+            />
+          </div>
+        ))}
+      </div>
       <button onClick={checkPotions}>Check Potions</button>
-      <button onClick={resetIngredients}>Reset Ingredients</button>
       <h2>Available Potions:</h2>
       {canMake.length === 0 ? (
         <p>No potions can be made</p>
@@ -73,14 +81,6 @@ const App = () => {
           ))}
         </ul>
       )}
-      <h2>Current Ingredients:</h2>
-      <ul>
-        {Object.entries(ingredients).map(([ingredient, count]) => (
-          <li key={ingredient}>
-            {ingredient}: {count}
-          </li>
-        ))}
-      </ul>
     </div>
   );
 };
