@@ -49,10 +49,13 @@ const App = () => {
   };
 
   const hasNecessaryIngredients = (requiredIngredients, activeIngredients) => {
-    return requiredIngredients.every((ingredient) =>
-      activeIngredients.includes(ingredient)
-    );
+    // Filter the required ingredients to only include those the player has
+    const count = requiredIngredients.filter(ingredient => activeIngredients.includes(ingredient)).length;
+    
+    // Check if the player has at least two of the required ingredients
+    return count >= 2;
   };
+  
 
   const checkPotions = () => {
     const activeIngredients = getActiveIngredients(ingredients);

@@ -5,11 +5,11 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "SWA: Run StaticWebApp2",
+            "name": "SWA: Run SkyrimWebApp",
             "request": "launch",
-            "type": "pwa-chrome",
+            "type": "msedge",
             "url": "http://localhost:4280",
-            "preLaunchTask": "swa: start StaticWebApp2",
+            "preLaunchTask": "swa: start SkyrimWebApp",
             "webRoot": "${workspaceFolder}/",
             "timeout": 30000
         },
