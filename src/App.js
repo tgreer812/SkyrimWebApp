@@ -1,86 +1,111 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import Cookies from "js-cookie";
 import recipes from "./recipes.json";
 import "./App.css";
 
 const App = () => {
-  const [ingredients, setIngredients] = useState({});
+  const allIngredients = Array.from(new Set(Object.values(recipes).flat()));
+
+  // Initialize ingredients state from cookies or as false
+  const initialIngredientsState = allIngredients.reduce((acc, ingredient) => {
+    const cookieState = Cookies.get(ingredient);
+    acc[ingredient] = cookieState ? cookieState === "true" : false;
+    return acc;
+  }, {});
+
+  const [ingredients, setIngredients] = useState(initialIngredientsState);
   const [canMake, setCanMake] = useState([]);
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setIngredients({ ...ingredients, [name]: Number(value) });
-  };
-
-  const getAllIngredients = (supply) => {
-    return Object.keys(supply).filter((ingredient) => supply[ingredient] > 0);
-  };
-
-  const hasNecessaryIngredients = (requiredIngredients, allIngredients) => {
-    let hasCount = 0;
-    requiredIngredients.forEach((ingredient) => {
-      if (allIngredients.includes(ingredient)) {
-        hasCount += 1;
-      }
+  useEffect(() => {
+    // Save ingredient state to cookies whenever it changes
+    allIngredients.forEach(ingredient => {
+      Cookies.set(ingredient, ingredients[ingredient], { expires: 365 }); // Cookie expires in 1 year
     });
-    return hasCount >= 2;
+  }, [ingredients]);
+
+  const handleIngredientClick = (ingredient) => {
+    setIngredients({
+      ...ingredients,
+      [ingredient]: !ingredients[ingredient],
+    });
   };
 
-  const trimListToMySupply = (myAvailableIngredients, allUseableIngredients) => {
-    const mySupply = myAvailableIngredients.filter((ingredient) =>
-      allUseableIngredients.includes(ingredient)
+  const handleReset = () => {
+    setIngredients(allIngredients.reduce((acc, ingredient) => {
+      acc[ingredient] = false;
+      return acc;
+    }, {}));
+  };
+
+  const handleSelectAll = () => {
+    setIngredients(allIngredients.reduce((acc, ingredient) => {
+      acc[ingredient] = true;
+      return acc;
+    }, {}));
+  };
+
+  const getActiveIngredients = (supply) => {
+    return Object.keys(supply).filter((ingredient) => supply[ingredient]);
+  };
+
+  const hasNecessaryIngredients = (requiredIngredients, activeIngredients) => {
+    return requiredIngredients.every((ingredient) =>
+      activeIngredients.includes(ingredient)
     );
-    return mySupply.sort();
   };
 
   const checkPotions = () => {
-    const allAvailableIngredients = getAllIngredients(ingredients);
+    const activeIngredients = getActiveIngredients(ingredients);
     const canMakePotions = [];
     for (const potion in recipes) {
-      if (hasNecessaryIngredients(recipes[potion], allAvailableIngredients)) {
-        canMakePotions.push([
-          potion,
-          trimListToMySupply(allAvailableIngredients, recipes[potion]),
-        ]);
+      if (hasNecessaryIngredients(recipes[potion], activeIngredients)) {
+        canMakePotions.push(potion);
       }
     }
     setCanMake(canMakePotions);
   };
 
-  const ingredientList = Array.from(
-    new Set(Object.values(recipes).flat())
-  ).sort();
-
   return (
     <div className="App">
       <h1>Potion Maker</h1>
-      <h2>Enter your ingredient quantities:</h2>
-      <div className="ingredient-inputs">
-        {ingredientList.map((ingredient) => (
-          <div key={ingredient}>
-            <label>{ingredient}:</label>
-            <input
-              type="number"
-              name={ingredient}
-              min="0"
-              value={ingredients[ingredient] || ""}
-              onChange={handleInputChange}
-            />
-          </div>
+      <h2>Select your ingredients:</h2>
+      <div className="ingredient-buttons">
+        {allIngredients.map((ingredient) => (
+          <button
+            key={ingredient}
+            onClick={() => handleIngredientClick(ingredient)}
+            className={ingredients[ingredient] ? "active" : ""}
+          >
+            {ingredient}
+          </button>
         ))}
       </div>
+      <button onClick={handleReset}>Reset</button>
+      <button onClick={handleSelectAll}>Select All</button>
       <button onClick={checkPotions}>Check Potions</button>
       <h2>Available Potions:</h2>
-      {canMake.length === 0 ? (
-        <p>No potions can be made</p>
-      ) : (
-        <ul>
-          {canMake.map((potion) => (
-            <li key={potion[0]}>
-              {potion[0]}: {potion[1].join(", ")}
-            </li>
-          ))}
-        </ul>
-      )}
+      <table>
+        <thead>
+          <tr>
+            <th>Potion</th>
+            <th>Ingredients</th>
+          </tr>
+        </thead>
+        <tbody>
+          {canMake.length === 0 ? (
+            <tr>
+              <td colSpan="2">No potions can be made</td>
+            </tr>
+          ) : (
+            canMake.map((potion) => (
+              <tr key={potion}>
+                <td>{potion}</td>
+                <td>{recipes[potion].filter((ingredient) => ingredients[ingredient]).join(", ")}</td>
+              </tr>
+            ))
+          )}
+        </tbody>
+      </table>
     </div>
   );
 };

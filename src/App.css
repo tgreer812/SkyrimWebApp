@@ -1,8 +1,22 @@
 .App {
-    text-align: center;
-  }
-  
-  button {
-    margin: 0.5rem;
-  }
-  
+  text-align: center;
+}
+
+button {
+  margin: 0.5rem;
+  background-color: #f4f4f4; /* Light gray background for inactive buttons */
+  color: #333; /* Dark text for contrast */
+  border: 2px solid transparent; /* Smooth out the button appearance */
+  padding: 0.5rem 1rem; /* Padding for better touch targets */
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s; /* Smooth transitions for color changes */
+}
+
+button:hover {
+  background-color: #ddd; /* Slightly darker background on hover for better interaction feedback */
+}
+
+button.active {
+  background-color: #4CAF50; /* Green background for active buttons */
+  color: white; /* White text for high contrast on active buttons */
+  border-color: #367c39; /* Dark green border for a more defined look */
+}
