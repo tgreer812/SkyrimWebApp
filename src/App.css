@@ -4,19 +4,52 @@
 
 button {
   margin: 0.5rem;
-  background-color: #f4f4f4; /* Light gray background for inactive buttons */
-  color: #333; /* Dark text for contrast */
-  border: 2px solid transparent; /* Smooth out the button appearance */
-  padding: 0.5rem 1rem; /* Padding for better touch targets */
-  transition: background-color 0.3s, color 0.3s, border-color 0.3s; /* Smooth transitions for color changes */
+  background-color: #f4f4f4;
+  color: #333;
+  border: 2px solid transparent;
+  padding: 0.5rem 1rem;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
 }
 
 button:hover {
-  background-color: #ddd; /* Slightly darker background on hover for better interaction feedback */
+  background-color: #ddd;
 }
 
 button.active {
-  background-color: #4CAF50; /* Green background for active buttons */
-  color: white; /* White text for high contrast on active buttons */
-  border-color: #367c39; /* Dark green border for a more defined look */
+  background-color: #4CAF50;
+  color: white;
+  border-color: #367c39;
+}
+
+table {
+  margin: 20px auto; /* Centers the table horizontally */
+  width: 80%; /* Set a specific width for the table */
+  border-collapse: collapse; /* Ensures borders between cells are merged */
+}
+
+th, td {
+  border: 1px solid #ddd; /* Light grey border for readability */
+  padding: 8px; /* Adequate padding for cell content */
+  text-align: left; /* Align text to the left within cells */
+}
+
+th {
+  background-color: #4CAF50; /* Green background for header */
+  color: white; /* White text for contrast */
+}
+
+td {
+  background-color: #f9f9f9; /* Very light grey for cells to improve readability */
+}
+
+th:first-child, td:first-child {
+  border-right: 2px solid #367c39; /* Distinct border to separate potion name from ingredients */
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2; /* Zebra striping for rows */
+}
+
+tr:hover {
+  background-color: #ddd; /* Highlight row on hover for better interactivity */
 }
