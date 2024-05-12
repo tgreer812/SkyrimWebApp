@@ -1,55 +1,79 @@
+:root {
+  --primary-color: #4a7c59; /* Dark green, more subtle than before */
+  --secondary-color: #c7d3bf; /* Light green */
+  --accent-color: #333333; /* Charcoal for text, ensures good readability */
+  --font-heading: 'Merriweather', serif; /* Elegant, readable serif font for headings */
+  --font-body: 'Open Sans', sans-serif; /* Clean, modern sans-serif for body text */
+}
+
 .App {
   text-align: center;
+  font-family: var(--font-body);
+  color: var(--accent-color);
+  background-color: #ffffff;
 }
 
 button {
   margin: 0.5rem;
   background-color: #f4f4f4;
-  color: #333;
+  color: var(--accent-color);
   border: 2px solid transparent;
   padding: 0.5rem 1rem;
-  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s, transform 0.2s;
+  font-family: var(--font-body);
 }
 
 button:hover {
-  background-color: #ddd;
+  background-color: var(--secondary-color);
+  transform: scale(1.05); /* Slight increase in size on hover for better feedback */
 }
 
 button.active {
-  background-color: #4CAF50;
+  background-color: var(--primary-color);
   color: white;
   border-color: #367c39;
 }
 
 table {
-  margin: 20px auto; /* Centers the table horizontally */
-  width: 80%; /* Set a specific width for the table */
-  border-collapse: collapse; /* Ensures borders between cells are merged */
+  margin: 20px auto; /* Center table */
+  width: 80%;
+  border-collapse: collapse;
 }
 
 th, td {
-  border: 1px solid #ddd; /* Light grey border for readability */
-  padding: 8px; /* Adequate padding for cell content */
-  text-align: left; /* Align text to the left within cells */
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+  font-family: var(--font-heading);
 }
 
 th {
-  background-color: #4CAF50; /* Green background for header */
-  color: white; /* White text for contrast */
+  background-color: var(--primary-color);
+  color: white;
 }
 
 td {
-  background-color: #f9f9f9; /* Very light grey for cells to improve readability */
+  background-color: #f9f9f9;
 }
 
 th:first-child, td:first-child {
-  border-right: 2px solid #367c39; /* Distinct border to separate potion name from ingredients */
+  border-right: 2px solid #367c39;
 }
 
 tr:nth-child(even) {
-  background-color: #f2f2f2; /* Zebra striping for rows */
+  background-color: #f2f2f2;
 }
 
 tr:hover {
-  background-color: #ddd; /* Highlight row on hover for better interactivity */
+  background-color: #ddd;
+}
+
+@media (max-width: 768px) {
+  table, thead, tbody, th, td, tr {
+    display: block;
+    width: 100%;
+  }
+  th, td {
+    text-align: center; /* Center text for better mobile readability */
+  }
 }

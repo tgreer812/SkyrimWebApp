@@ -21,7 +21,7 @@ const App = () => {
     allIngredients.forEach(ingredient => {
       Cookies.set(ingredient, ingredients[ingredient], { expires: 365 }); // Cookie expires in 1 year
     });
-  }, [ingredients]);
+  }, [ingredients, allIngredients]);
 
   const handleIngredientClick = (ingredient) => {
     setIngredients({

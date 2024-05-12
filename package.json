@@ -11,6 +11,9 @@
     "react-dom": "^16.12.0",
     "react-scripts": "^5.0.1"
   },
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.16.7"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
