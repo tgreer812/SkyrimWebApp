@@ -4,7 +4,7 @@ import recipes from "./recipes.json";
 import "./App.css";
 
 const App = () => {
-  const allIngredients = Array.from(new Set(Object.values(recipes).flat()));
+  const allIngredients = Array.from(new Set(Object.values(recipes).flat())).sort();
 
   // Initialize ingredients state from cookies or as false
   const initialIngredientsState = allIngredients.reduce((acc, ingredient) => {
